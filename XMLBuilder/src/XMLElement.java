@@ -57,7 +57,7 @@ public class XMLElement {
 	 * 
 	 * @param elem - The element to remove
 	 */
-	public void removeNode(XMLElement elem){
+	public void remove(XMLElement elem){
 		this.children.remove(elem);
 	}
 	
