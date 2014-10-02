@@ -19,15 +19,15 @@ public class XMLNode {
 	private String name;
 	
 	/**
-	 * If the node has a payload then its value will not be displayed. The payload
-	 * is a sub node that builds the tree structure of the XML document
+	 * If the node has children nodes then its value will not be displayed. Children are
+	 * sub nodes that builds the tree structure of the XML document
 	 * 
 	 * @see value
 	 */
-	private ArrayList<XMLNode> payload;
+	private ArrayList<XMLNode> children;
 	
 	/**
-	 * This is the value that the node contains. If the node has payload the value will
+	 * This is the value that the node contains. If the node has children the value will
 	 * not be added
 	 * 
 	 * @see payload
@@ -58,18 +58,18 @@ public class XMLNode {
 		this.name = name;
 		this.value = value;
 		this.attributes = new HashMap<String, String>();
-		this.payload = new ArrayList<XMLNode>();
+		this.children = new ArrayList<XMLNode>();
 	}
 	
 	
 	
 	/**
-	 * Adds a node to the body of this node.
+	 * Adds a child to the body of this node.
 	 * 
-	 * @see payload
+	 * @see children
 	 */
 	public void addNode(XMLNode node){
-		this.payload.add(node);
+		this.children.add(node);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class XMLNode {
 	 * @param node - The node to remove
 	 */
 	public void removeNode(XMLNode node){
-		this.payload.remove(node);
+		this.children.remove(node);
 	}
 	
 	/**
@@ -102,6 +102,63 @@ public class XMLNode {
 	}
 	
 	/**
+	 * Return the name of this node	
+	 * @return The name of the node
+	 * @see name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets the name of this node
+	 * @param name - the new name
+	 * @see name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Returns all of the children that this node contains
+	 * 
+	 * @return A list of the immediate children that this node contains
+	 * @see children
+	 */
+	public ArrayList<XMLNode> getChildren() {
+		return children;
+	}
+
+	/**
+	 * Returns the value of this node
+	 * 
+	 * @return the value of this node
+	 * @see value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * Sets the value of this node
+	 * 
+	 * @param value - The new value
+	 * @see value
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	/**
+	 * Returns a map of all of the attributes that this node has
+	 * 
+	 * @return All of the attributes owned by this node
+	 */
+	public HashMap<String, String> getAttributes() {
+		return attributes;
+	}
+
+	/**
 	 * Prints a "pretty-print" version of this XML tree starting at this node
 	 * 
 	 * @return A text representation of this XML tree
@@ -124,9 +181,9 @@ public class XMLNode {
 		}	
 		out +=">";
 		
-		if(this.payload.size() > 0){
+		if(this.children.size() > 0){
 			out += "\n";
-			for(XMLNode n : this.payload){
+			for(XMLNode n : this.children){
 				out += n.print(tabs + "\t");			
 			}
 		}
