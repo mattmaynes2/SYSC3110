@@ -101,8 +101,8 @@ public class XMLNode extends XMLElement{
 
 	
 	public static void main(String [] args){
-		XMLNode root = new XMLNode("course");
-		XMLNode course = new XMLNode("class");
+		XMLDocument root = new XMLDocument("course");
+		XMLElement course = new XMLElement("class");
 		XMLNode michael = new XMLNode("student", "Michael");
 		michael.addAttribute("id", "12345678");
 		michael.addAttribute("year", "3");
