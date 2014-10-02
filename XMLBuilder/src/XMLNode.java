@@ -5,26 +5,12 @@
  * an XML tree can be built.
  * 
  * @author Matthew Maynes
- * @version 0.0
+ * @version 0.1
  *
  */
-import java.util.HashMap;
-import java.util.ArrayList;
 
-public class XMLNode {
+public class XMLNode extends XMLElement{
 	
-	/**
-	 * The name of the node and will serve as the tag.
-	 */
-	private String name;
-	
-	/**
-	 * If the node has children nodes then its value will not be displayed. Children are
-	 * sub nodes that builds the tree structure of the XML document
-	 * 
-	 * @see value
-	 */
-	private ArrayList<XMLNode> children;
 	
 	/**
 	 * This is the value that the node contains. If the node has children the value will
@@ -33,101 +19,6 @@ public class XMLNode {
 	 * @see payload
 	 */
 	private String value;
-	
-	/**
-	 * A list of the attributes and their values for this node
-	 */
-	private HashMap<String, String> attributes;
-
-	/**
-	 * Constructs a node with just a name and no value
-	 * @param name - The name of this node
-	 */
-	public XMLNode (String name){
-		this(name, "");
-		
-	}
-	
-	/**
-	 * Constructs a node with a name and a value
-	 * 
-	 * @param name - The name of this node
-	 * @param value - The value this node holds
-	 */
-	public XMLNode(String name, String value){
-		this.name = name;
-		this.value = value;
-		this.attributes = new HashMap<String, String>();
-		this.children = new ArrayList<XMLNode>();
-	}
-	
-	
-	
-	/**
-	 * Adds a child to the body of this node.
-	 * 
-	 * @see children
-	 */
-	public void addNode(XMLNode node){
-		this.children.add(node);
-	}
-	
-	/**
-	 * Removes the given node from this nodes body if it exists
-	 * 
-	 * @param node - The node to remove
-	 */
-	public void removeNode(XMLNode node){
-		this.children.remove(node);
-	}
-	
-	/**
-	 * Adds an attribute with a value to this node
-	 * 
-	 * @param name - The name of the attribute
-	 * @param value - The value of the attribute
-	 */
-	public void addAttribute(String name, String value){
-		this.attributes.put(name, value);
-	}
-	
-	/**
-	 * Removes the specified attribute from this node if it exists and returns it
-	 * 
-	 * @param name - The name of the attribute to remove
-	 * @return The value of the attribute that was removed or null
-	 */
-	public String removeAttribute(String name){
-		return this.attributes.remove(name);
-	}
-	
-	/**
-	 * Return the name of this node	
-	 * @return The name of the node
-	 * @see name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Sets the name of this node
-	 * @param name - the new name
-	 * @see name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Returns all of the children that this node contains
-	 * 
-	 * @return A list of the immediate children that this node contains
-	 * @see children
-	 */
-	public ArrayList<XMLNode> getChildren() {
-		return children;
-	}
 
 	/**
 	 * Returns the value of this node
@@ -148,14 +39,26 @@ public class XMLNode {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
+	
+	
 	/**
-	 * Returns a map of all of the attributes that this node has
+	 * Constructs a node with a name but no value
 	 * 
-	 * @return All of the attributes owned by this node
+	 * @param name - The name of this node
 	 */
-	public HashMap<String, String> getAttributes() {
-		return attributes;
+	public XMLNode(String name){
+		this(name, "");
+	}
+	
+	/**
+	 * Constructs a node with a name and a value
+	 * 
+	 * @param name - The name of this node
+	 * @param value - The value this node holds
+	 */
+	public XMLNode(String name, String value){
+		super(name);
+		this.value = value;
 	}
 
 	/**
@@ -171,33 +74,31 @@ public class XMLNode {
 	 * Prints the values of this node
 	 * @see print()
 	 */
-	private String print(String tabs){
-		String out = tabs + "<" + this.name;
+	@Override
+	protected String print(String tabs){
+		String out = tabs + "<" + this.getName();
 		
-		if(this.attributes.size() > 0){
-			for(String key : this.attributes.keySet()){
-				out += " " + key + "=\"" + this.attributes.get(key) + "\"";
+		if(this.getAttributes().size() > 0){
+			for(String key : this.getAttributes().keySet()){
+				out += " " + key + "=\"" + this.getAttributes().get(key) + "\"";
 			}
 		}	
 		out +=">";
 		
-		if(this.children.size() > 0){
+		if(this.getChildren().size() > 0){
 			out += "\n";
-			for(XMLNode n : this.children){
+			for(XMLElement n : this.getChildren()){
 				out += n.print(tabs + "\t");			
 			}
 		}
 		else{
-			return out + this.value + "</" + this.name + ">\n";
+			return out + this.value + "</" + this.getName() + ">\n";
 		}
-		return out + tabs + "</" + this.name + ">\n";
+		return out + tabs + "</" + this.getName() + ">\n";
 	}
 	
 	
-	@Override
-	public String toString(){
-		return this.print();
-	}
+
 	
 	public static void main(String [] args){
 		XMLNode root = new XMLNode("course");
@@ -207,11 +108,11 @@ public class XMLNode {
 		michael.addAttribute("year", "3");
 		
 		
-		root.addNode(new XMLNode("code", "SYSC3110"));
-		root.addNode(new XMLNode("prof", "Babak"));
-		root.addNode(course);
-		course.addNode(michael);		
-		course.addNode(new XMLNode("student", "Alan"));
+		root.add(new XMLNode("code", "SYSC3110"));
+		root.add(new XMLNode("prof", "Babak"));
+		root.add(course);
+		course.add(michael);		
+		course.add(new XMLNode("student", "Alan"));
 		
 		System.out.println(root);
 	}
