@@ -72,6 +72,16 @@ public class XMLElement {
 	}
 	
 	/**
+	 * Returns the value of the specified attribute for this element.
+	 * 
+	 * @param name - The name of the attribute
+	 * @return The value of the attribute
+	 */
+	public String getAttribute(String name){
+		return this.attributes.get(name);
+	}
+	
+	/**
 	 * Removes the specified attribute from this element if it exists and returns it
 	 * 
 	 * @param name - The name of the attribute to remove
