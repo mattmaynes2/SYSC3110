@@ -1,3 +1,13 @@
+# Mac OS X Hidden Files
+.DS_Store
+.localized
+
+# Eclipse Data
 .metadata
-bin
 .recommenders
+.project
+.settings
+.classpath
+
+# Java
+*.class
