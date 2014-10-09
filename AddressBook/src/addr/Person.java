@@ -36,4 +36,9 @@ public class Person {
 		return this.name;
 	}
 	
+	public String serialize(){
+		return this.name + ", " + this.address + ", " + this.phoneNumber;
+	}
+	
+	
 }
