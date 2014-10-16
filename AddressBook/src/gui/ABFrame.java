@@ -1,6 +1,8 @@
 package gui;
 
+import javax.swing.AbstractButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,7 +24,7 @@ import java.io.IOException;
 public class ABFrame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	private ABContactList contactList;
+	private JList<Person> contactList;
 	private ABMenuBar menuBar;
 	private ABContactPanel contactPanel;
 	private AddressBook addressBook;
@@ -41,13 +43,14 @@ public class ABFrame extends JFrame{
 		this.addressBook = new AddressBook();
 		setup();
 		pack();
-		this.contactList.addBook(addressBook);
+		this.contactPanel.getAddButton().setEnabled(false);
+		this.contactList.setModel(addressBook);
 	}
 
 	private void setup(){
 		JScrollPane sp;
 		this.menuBar = new ABMenuBar();
-		this.contactList = new ABContactList();
+		this.contactList = new JList<Person>();
 		this.contactPanel = new ABContactPanel();
 		
 		sp = new JScrollPane(this.contactList);
@@ -59,26 +62,35 @@ public class ABFrame extends JFrame{
 		this.contactPanel.getAddButton().addActionListener(this.addButtonListener());
 		this.menuBar.addSaveListener(this.saveListener());
 		this.menuBar.addLoadListener(this.loadListener());
+		this.menuBar.addAddListener(this.addListener());
+		this.menuBar.addRemoveListener(this.removeListener());
 		this.contactList.addListSelectionListener(this.listListener());
 		setJMenuBar(this.menuBar);
 	}
 
 	
-	public ABContactList getContactList(){
+	public JList<Person> getContactList(){
 		return this.contactList;
 	}
 	
 	public ActionListener addButtonListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				Person p = new Person(contactPanel.getNameField().getText());
-				p.setAddress(contactPanel.getAddressField().getText());
-				p.setPhoneNumber(contactPanel.getPhoneField().getText());
-				addressBook.add(p);
-				contactList.updateList();
-				contactPanel.getNameField().setText("");
-				contactPanel.getAddressField().setText("");
-				contactPanel.getPhoneField().setText("");
+				if(((AbstractButton) e.getSource()).getText().equals("Add")){
+					Person p = new Person(contactPanel.getNameField().getText());
+					p.setAddress(contactPanel.getAddressField().getText());
+					p.setPhoneNumber(contactPanel.getPhoneField().getText());
+					addressBook.addElement(p);
+					contactList.updateUI();
+					contactPanel.getNameField().setText("");
+					contactPanel.getAddressField().setText("");
+					contactPanel.getPhoneField().setText("");
+					contactPanel.getAddButton().setEnabled(false);
+				}
+				else{
+					((AddressBook)contactList.getModel()).remove(contactList.getSelectedIndex());
+					contactPanel.getAddButton().setEnabled(false);
+				}
 			}			
 			
 		};
@@ -100,12 +112,33 @@ public class ABFrame extends JFrame{
 		};
 	}
 	
+	public ActionListener addListener(){
+		return new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				contactPanel.getNameField().setText("");
+				contactPanel.getAddressField().setText("");
+				contactPanel.getPhoneField().setText("");
+				contactPanel.getAddButton().setText("Add");
+				contactPanel.getAddButton().setEnabled(true);
+			}
+		};
+	}
+
+	public ActionListener removeListener(){
+		return new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				contactPanel.getAddButton().setText("Remove");
+				contactPanel.getAddButton().setEnabled(true);
+			}
+		};
+	}
+	
 	public ActionListener loadListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try {
 					addressBook.readFile(new FileReader("addresses.csv"));
-					contactList.updateList();
+					contactList.updateUI();
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				}

@@ -16,9 +16,14 @@ public class ABMenuBar extends JMenuBar{
 	private JMenuItem saveItem;
 	private JMenuItem loadItem;
 	
+	private JMenuItem addItem;
+	private JMenuItem removeItem;
+
+	
 	public ABMenuBar(){
 		super();
 		add(this.fileMenu());
+		add(this.editMenu());
 	}
 	
 	public JMenu fileMenu(){
@@ -33,7 +38,10 @@ public class ABMenuBar extends JMenuBar{
 	
 	public JMenu editMenu(){
 		this.editMenu = new JMenu("Edit");
-		
+		this.addItem = new JMenuItem("Add Buddy");
+		this.removeItem = new JMenuItem("Remove Buddy");
+		editMenu.add(this.addItem);
+		editMenu.add(this.removeItem);
 		return this.editMenu;
 		
 	}
@@ -47,4 +55,11 @@ public class ABMenuBar extends JMenuBar{
 		this.loadItem.addActionListener(li);
 	}
 	 
+	public void addAddListener(ActionListener li){
+		this.addItem.addActionListener(li);
+	}
+	
+	public void addRemoveListener(ActionListener li){
+		this.removeItem.addActionListener(li);
+	}
 }

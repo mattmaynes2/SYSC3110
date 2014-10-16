@@ -1,24 +1,17 @@
 package addr;
-import java.util.ArrayList;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-public class AddressBook extends ArrayList<Person>{
+import javax.swing.DefaultListModel;
+
+public class AddressBook extends DefaultListModel<Person>{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	
-	public String toString(){
-		String result = "";
-		for(Person buddy : this){
-			result += buddy.toString() + '\n';
-		}
-		return result;
-	}
 	
 	
 	public void readFile(Reader reader){
@@ -34,7 +27,7 @@ public class AddressBook extends ArrayList<Person>{
 					Person p = new Person(el[0]);
 					p.setAddress(el[1]);
 					p.setPhoneNumber(el[2]);
-					this.add(p);
+					this.addElement(p);
 				}
 				
 				line = br.readLine();
@@ -50,8 +43,8 @@ public class AddressBook extends ArrayList<Person>{
 	
 	public String serialize(){
 		String s = "";
-		for(Person p : this){
-			s += p.serialize() + "\n";
+		for(int i = 0; i < this.size(); i++){
+			s += this.get(i).serialize() + "\n";
 		}
 		return s;
 	}
