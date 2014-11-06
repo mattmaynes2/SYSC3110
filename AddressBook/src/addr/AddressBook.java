@@ -43,7 +43,7 @@ public class AddressBook extends DefaultListModel<BuddyInfo>{
 	public void export(String path){
 		BufferedWriter bw;
 		try {
-			bw = new BufferedWriter(new FileWriter("addresses.csv"));
+			bw = new BufferedWriter(new FileWriter(path));
 			bw.write(this.serialize());
 			bw.close();
 		} catch (IOException e1) {
