@@ -7,17 +7,17 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import addr.Person;
+import addr.BuddyInfo;
 
 public class TestPerson {
 
-	private Person person1;
-	private Person person2;
+	private BuddyInfo person1;
+	private BuddyInfo person2;
 	
 	@Before
 	public void setUp() throws Exception {
-		person1 = new Person("Tom");
-		person2 = new Person("Rob");
+		person1 = new BuddyInfo("Tom");
+		person2 = new BuddyInfo("Rob");
 	}
 	@Test
 	public void testName(){

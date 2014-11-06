@@ -1,12 +1,15 @@
 package addr;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 
 import javax.swing.DefaultListModel;
 
-public class AddressBook extends DefaultListModel<Person>{
+public class AddressBook extends DefaultListModel<BuddyInfo>{
 	
 	/**
 	 * 
@@ -14,32 +17,39 @@ public class AddressBook extends DefaultListModel<Person>{
 	private static final long serialVersionUID = 1L;
 	
 	
-	public void readFile(Reader reader){
-		BufferedReader br = new BufferedReader(reader);
+	// This is the import 
+	public void readFile(String file){
 		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line = br.readLine();
 			while(line != null){
-				String[] el = line.split(",");
-				if(el.length < 3){
-					continue;
-				}
-				else{
-					Person p = new Person(el[0]);
-					p.setAddress(el[1]);
-					p.setPhoneNumber(el[2]);
-					this.addElement(p);
-				}
-				
+				BuddyInfo buddy = BuddyInfo.create(line);
+				if(buddy != null)
+					this.addElement(buddy);
+	
 				line = br.readLine();
 			}
 			br.close();
-		} catch (IOException e) {
+		} catch(FileNotFoundException e){
+			System.out.println("The given file was not found: " + file);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 
 	}
 
+	
+	public void export(String path){
+		BufferedWriter bw;
+		try {
+			bw = new BufferedWriter(new FileWriter("addresses.csv"));
+			bw.write(this.serialize());
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
 	
 	public String serialize(){
 		String s = "";

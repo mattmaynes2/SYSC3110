@@ -2,20 +2,22 @@ package addr;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.StringTokenizer;
 
-public class Person {
+public class BuddyInfo {
 	
+	private static final String DELIMETER = "$";
 	private String name;
 	private String address;
 	private String phoneNumber;
 	private Date birthDate;
 	
-	public Person(String name){
+	public BuddyInfo(String name){
 		this.name = name;
 		this.address = "";
 	}
 	
-	public Person(Person p){
+	public BuddyInfo(BuddyInfo p){
 		this.name = new String(p.getName());
 		this.address = new String(p.getAddress());
 		this.phoneNumber = new String(p.getPhoneNumber());
@@ -65,16 +67,27 @@ public class Person {
 	
 	@Override
 	public boolean equals(Object object){
-		if(object != null && object instanceof Person){
-			Person p = (Person)object;
+		if(object != null && object instanceof BuddyInfo){
+			BuddyInfo p = (BuddyInfo)object;
 			return p.getName().equals(getName()) && p.getAddress().equals(getAddress()) && p.getBirthDate().equals(getBirthDate());
 		}
 		return false;
 	}
 	
 	public String serialize(){
-		return this.name + ", " + this.address + ", " + this.phoneNumber;
+		return this.name + DELIMETER + this.address + DELIMETER + this.phoneNumber;
 	}
 	
 	
+	public static BuddyInfo create(String serial){
+		BuddyInfo buddy = null;
+		StringTokenizer st = new StringTokenizer(serial, DELIMETER);
+
+		buddy = new BuddyInfo(st.nextToken());
+		buddy.setAddress(st.nextToken());
+		buddy.setPhoneNumber(st.nextToken());
+		
+			
+		return buddy;
+	}
 }

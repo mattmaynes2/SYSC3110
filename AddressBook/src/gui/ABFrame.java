@@ -8,23 +8,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import addr.AddressBook;
-import addr.Person;
+import addr.BuddyInfo;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class ABFrame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
-	private JList<Person> contactList;
+	private JList<BuddyInfo> contactList;
 	private ABMenuBar menuBar;
 	private ABContactPanel contactPanel;
 	private AddressBook addressBook;
@@ -50,7 +45,7 @@ public class ABFrame extends JFrame{
 	private void setup(){
 		JScrollPane sp;
 		this.menuBar = new ABMenuBar();
-		this.contactList = new JList<Person>();
+		this.contactList = new JList<BuddyInfo>();
 		this.contactPanel = new ABContactPanel();
 		
 		sp = new JScrollPane(this.contactList);
@@ -69,7 +64,7 @@ public class ABFrame extends JFrame{
 	}
 
 	
-	public JList<Person> getContactList(){
+	public JList<BuddyInfo> getContactList(){
 		return this.contactList;
 	}
 	
@@ -77,7 +72,7 @@ public class ABFrame extends JFrame{
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(((AbstractButton) e.getSource()).getText().equals("Add")){
-					Person p = new Person(contactPanel.getNameField().getText());
+					BuddyInfo p = new BuddyInfo(contactPanel.getNameField().getText());
 					p.setAddress(contactPanel.getAddressField().getText());
 					p.setPhoneNumber(contactPanel.getPhoneField().getText());
 					addressBook.addElement(p);
@@ -99,14 +94,7 @@ public class ABFrame extends JFrame{
 	public ActionListener saveListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				BufferedWriter bw;
-				try {
-					bw = new BufferedWriter(new FileWriter("addresses.csv"));
-					bw.write(addressBook.serialize());
-					bw.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				addressBook.export("address.csv");
 		
 			}
 		};
@@ -136,12 +124,11 @@ public class ABFrame extends JFrame{
 	public ActionListener loadListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				try {
-					addressBook.readFile(new FileReader("addresses.csv"));
-					contactList.updateUI();
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				}
+				AddressBook newBook = new AddressBook();
+				newBook.readFile("addresses.csv");
+				contactList.setModel(newBook);
+				contactList.updateUI();
+				addressBook = newBook;
 		
 			}
 		};
@@ -153,7 +140,7 @@ public class ABFrame extends JFrame{
 			public void valueChanged(ListSelectionEvent e) {
 				int index = contactList.getSelectedIndex();
 				if(index >= 0 && index < addressBook.size()){
-					Person p = addressBook.get(index);
+					BuddyInfo p = addressBook.get(index);
 					contactPanel.getNameField().setText(p.getName());
 					contactPanel.getAddressField().setText(p.getAddress());
 					contactPanel.getPhoneField().setText(p.getPhoneNumber());

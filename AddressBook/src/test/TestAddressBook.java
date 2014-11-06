@@ -4,17 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import addr.AddressBook;
-import addr.Person;
+import addr.BuddyInfo;
 import static org.junit.Assert.*;
 
 public class TestAddressBook {
 
-	private Person person1;
+	private BuddyInfo person1;
 	private AddressBook book;
 	
 	@Before
 	public void setUp(){
-		person1 = new Person("Matt");
+		person1 = new BuddyInfo("Matt");
 		book = new AddressBook();
 	}
 	
