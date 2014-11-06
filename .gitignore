@@ -15,6 +15,7 @@
 
 # Java
 *.class
+*.jar
 
 # Compressed Folders
 *.zip
