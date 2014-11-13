@@ -16,7 +16,7 @@ public class Minesweeper extends Observable{
 	private int hitCount;
 	
 	private int bombs;
-	
+
 	public Minesweeper(int rows, int columns, int bombs){
 		this.rows = rows;
 		this.columns = columns;
