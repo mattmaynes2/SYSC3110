@@ -56,7 +56,7 @@ public class Frame extends JFrame implements Observer{
 				if(cell.length < 2)
 					return;
 				
-				model.tryClick(Integer.parseInt(cell[0]), Integer.parseInt(cell[1]));	
+				model.tryHit(Integer.parseInt(cell[0]), Integer.parseInt(cell[1]));	
 			}
 			
 		};

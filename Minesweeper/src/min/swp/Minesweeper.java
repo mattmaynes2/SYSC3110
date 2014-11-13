@@ -15,6 +15,7 @@ public class Minesweeper extends Observable{
 	
 	private int hitCount;
 	
+	private int bombs;
 	
 	public Minesweeper(int rows, int columns, int bombs){
 		this.rows = rows;
@@ -22,21 +23,8 @@ public class Minesweeper extends Observable{
 		this.board = new boolean[rows][columns];
 		this.hits = new boolean[rows][columns];
 		this.hitCount = 0;
-		
-		// Generate bombs
-		Random rand = new Random();
-		int r, c;
-		for(int i = 0; i < bombs; i++){
-			r = rand.nextInt(this.rows);
-			c = rand.nextInt(this.columns);
-			if(!this.board[r][c]){
-				this.board[r][c] = true;
-			}
-			else{
-				i--;
-			}
-		}
-		
+		this.bombs = bombs;
+		generateBombs();
 	}
 	
 	public Minesweeper(int rows, int columns){
@@ -49,7 +37,7 @@ public class Minesweeper extends Observable{
 	
 	
 	
-	public boolean tryClick(int row, int column){
+	public boolean tryHit(int row, int column){
 		if(this.hits[row][column])
 			return false;
 		
@@ -77,6 +65,9 @@ public class Minesweeper extends Observable{
 			return bombs;
 	}
 	
+	public boolean hasHit(int row, int column){
+		return this.hits[row][column];
+	}
 	
 	public int getRows(){
 		return this.rows;
@@ -97,6 +88,28 @@ public class Minesweeper extends Observable{
 	}
 	
 	
-	
+	public void reset(){
+		this.hitCount = 0;
+		this.hits = new boolean[this.rows][this.columns];
+		this.board = new boolean[this.rows][this.columns];
+		generateBombs();
+	}
 
+	
+	private void generateBombs(){
+		// Generate bombs
+		Random rand = new Random();
+		int r, c;
+		for(int i = 0; i < bombs; i++){
+			r = rand.nextInt(this.rows);
+			c = rand.nextInt(this.columns);
+			if(!this.board[r][c]){
+				this.board[r][c] = true;
+			}
+			else{
+				i--;
+			}
+		}
+	}
+	
 }
