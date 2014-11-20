@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.DefaultListModel;
 
-public class AddressBook extends DefaultListModel<BuddyInfo>{
+public class AddressBook extends DefaultListModel<BuddyInfo> implements Serializable{
 	
 	/**
 	 * 
@@ -17,6 +20,16 @@ public class AddressBook extends DefaultListModel<BuddyInfo>{
 	private static final long serialVersionUID = 1L;
 	
 	
+	public void readObject(String file){
+		try{
+			ObjectInputStream oStream = new ObjectInputStream(new FileInputStream(file));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+
 	// This is the import 
 	public void readFile(String file){
 		try {
