@@ -9,7 +9,7 @@ import addr.AddressBook;
 import addr.BuddyInfo;
 import static org.junit.Assert.*;
 
-public class AddressBookTest {
+public class SerializableAddressBookTest {
 
 	private BuddyInfo person1;
 	private AddressBook book;
@@ -36,16 +36,15 @@ public class AddressBookTest {
 	
 	@Test
 	public void testSave(){
-		book.export("test.csv");
+		book.writeObject("test.csv");
 		assertTrue(new File("test.csv").exists());
 		new File("test.csv").delete();
 	}
 	
 	@Test
 	public void testLoad(){
-		book.export("test.csv");
-		AddressBook newBook = new AddressBook();
-		newBook.readFile("test.csv");
+		book.writeObject("test.csv");
+		AddressBook newBook = AddressBook.readObject("test.csv");
 		
 		assertEquals(newBook.size(), book.size());
 		for(int i = 0; i < book.size(); i++){
@@ -53,6 +52,4 @@ public class AddressBookTest {
 		}
 		new File("test.csv").delete();
 	}
-	
-	
 }
