@@ -4,7 +4,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-public class BuddyInfo {
+import java.io.Serializable;
+
+public class BuddyInfo implements Serializable {
+
+
+	private static final long serialVersionUID = 1L;
 	
 	private static final String DELIMETER = "$";
 	private String name;

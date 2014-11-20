@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import addr.BuddyInfo;
 
-public class TestPerson {
+public class BuddyInfoTest {
 
 	private BuddyInfo person1;
 	private BuddyInfo person2;

@@ -7,7 +7,7 @@ import addr.AddressBook;
 import addr.BuddyInfo;
 import static org.junit.Assert.*;
 
-public class TestAddressBook {
+public class AddressBookTest {
 
 	private BuddyInfo person1;
 	private AddressBook book;

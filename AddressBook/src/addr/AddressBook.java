@@ -7,23 +7,35 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.DefaultListModel;
 
 public class AddressBook extends DefaultListModel<BuddyInfo> implements Serializable{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	
-	public void readObject(String file){
+	public static AddressBook readObject(String file){
 		try{
 			ObjectInputStream oStream = new ObjectInputStream(new FileInputStream(file));
-			
+			AddressBook book = (AddressBook)oStream.readObject();
+			oStream.close();
+			return book;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void writeObject(String file){
+		try{
+			ObjectOutputStream oStream = new ObjectOutputStream(new FileOutputStream(file));
+			oStream.writeObject(this);
+			oStream.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -94,8 +94,8 @@ public class ABFrame extends JFrame{
 	public ActionListener saveListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				addressBook.export("address.csv");
-		
+				//addressBook.export("address.csv");
+				addressBook.writeObject("addressbook.dat");
 			}
 		};
 	}
@@ -124,8 +124,9 @@ public class ABFrame extends JFrame{
 	public ActionListener loadListener(){
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				AddressBook newBook = new AddressBook();
-				newBook.readFile("addresses.csv");
+				//AddressBook newBook = new AddressBook();
+				//newBook.readFile("addresses.csv");
+				AddressBook newBook = AddressBook.readObject("addressbook.dat");
 				contactList.setModel(newBook);
 				contactList.updateUI();
 				addressBook = newBook;
