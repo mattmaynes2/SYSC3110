@@ -13,6 +13,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.DefaultListModel;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class AddressBook extends DefaultListModel<BuddyInfo> implements Serializable{
 
@@ -82,6 +89,26 @@ public class AddressBook extends DefaultListModel<BuddyInfo> implements Serializ
 			s += this.get(i).serialize() + "\n";
 		}
 		return s;
+	}
+	
+	public void exportToXMLFile(String path) throws IOException{
+		StringBuffer buff = new StringBuffer("<book>");
+		for(int i = 0; i < this.size(); i++){
+			buff.append(this.get(i).toXMLString());
+		}
+		buff.append("</book>");
+		BufferedWriter stream = new BufferedWriter(new FileWriter(path));
+		stream.write(buff.toString());
+		stream.close();
+	}
+	
+	public void importFromXMlFile(String path)throws FileNotFoundException, SAXException, IOException, ParserConfigurationException{
+
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new FileInputStream(path));
+		NodeList list = doc.getElementsByTagName("book");
+		for(int i = 0; i < list.getLength(); i++){
+			this.addElement(BuddyInfo.create((Element)list.item(i)));
+		}
 	}
 	
 }

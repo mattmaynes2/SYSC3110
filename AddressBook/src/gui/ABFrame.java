@@ -6,6 +6,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import addr.AddressBook;
 import addr.BuddyInfo;
@@ -15,6 +18,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class ABFrame extends JFrame{
 
@@ -95,7 +99,12 @@ public class ABFrame extends JFrame{
 		return new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//addressBook.export("address.csv");
-				addressBook.writeObject("addressbook.dat");
+				//addressBook.writeObject("addressbook.dat");
+				try {
+					addressBook.exportToXMLFile("address.xml");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		};
 	}
@@ -126,10 +135,19 @@ public class ABFrame extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				//AddressBook newBook = new AddressBook();
 				//newBook.readFile("addresses.csv");
-				AddressBook newBook = AddressBook.readObject("addressbook.dat");
+				//AddressBook newBook = AddressBook.readObject("addressbook.dat");
+				
+				AddressBook newBook = new AddressBook();
+				try {
+					newBook.importFromXMlFile("address.xml");
+					addressBook = newBook;
+				} catch (SAXException | IOException
+						| ParserConfigurationException e1) {
+					e1.printStackTrace();
+				}
 				contactList.setModel(newBook);
 				contactList.updateUI();
-				addressBook = newBook;
+		
 		
 			}
 		};

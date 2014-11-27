@@ -3,8 +3,10 @@ package addr;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
-
 import java.io.Serializable;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class BuddyInfo implements Serializable {
 
@@ -83,6 +85,34 @@ public class BuddyInfo implements Serializable {
 		return this.name + DELIMETER + this.address + DELIMETER + this.phoneNumber;
 	}
 	
+	public String toXMLString(){
+		return "<name>" + this.name + "</name>" 
+				+ "<address>" + this.address + "</address>"
+				+ "<phone>" + this.phoneNumber + "</phone>";
+		
+	}
+	
+	public static BuddyInfo create(Element node){
+		BuddyInfo info = new BuddyInfo("");
+		NodeList list;
+
+		list = node.getElementsByTagName("name");
+		if(list.getLength() > 0){
+			info.setName(list.item(0).getTextContent());
+		}
+	
+		list = node.getElementsByTagName("address");
+		if(list.getLength() > 0){
+			info.setAddress(list.item(0).getTextContent());
+		}
+		
+		list = node.getElementsByTagName("phone");
+		if(list.getLength() > 0){
+			info.setPhoneNumber(list.item(0).getTextContent());
+		}
+		
+		return info;
+	}
 	
 	public static BuddyInfo create(String serial){
 		BuddyInfo buddy = null;
